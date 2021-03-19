@@ -1,0 +1,21 @@
+.Subject {
+    padding: 1.2em;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    position: relative;
+}
+
+.Teacher {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.active::before {
+    content: "";
+    background: #2196F3;
+    height: 100%;
+    width: 5px;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+}

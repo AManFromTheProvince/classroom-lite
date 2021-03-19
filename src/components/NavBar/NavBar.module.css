@@ -1,0 +1,20 @@
+.NavBar {
+    background: #fff;
+    min-height: 75px;
+    box-shadow: 0px 2px 4px #ccc;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.LinkList {
+    display: flex;
+    list-style: none;
+    color: #2196F3;
+}
+
+.LinkList li {
+    margin: 1em;
+    font-weight: bolder;
+    cursor: pointer
+}

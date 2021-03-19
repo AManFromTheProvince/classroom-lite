@@ -1,0 +1,24 @@
+.Spinner {
+    width: 100vw;
+    background: #90CAF9;
+    height: 1vh;
+}
+
+@keyframes loading {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(150%);
+    }
+}
+
+
+.InsideSpinner {
+    height: 1vh;
+    width: 40%;
+    background: #42A5F5;
+    animation: loading 1s ease-in infinite alternate forwards;
+}
+

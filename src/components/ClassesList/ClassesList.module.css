@@ -1,0 +1,7 @@
+.ClassesList {
+    background: #fff;
+    width: max-content;
+    box-shadow: 2px 0px 0px #ccc;
+    height: 88vh;
+    overflow-y: scroll;
+}
