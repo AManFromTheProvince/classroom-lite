@@ -9,7 +9,6 @@ const subject = (props) => {
         styleNames.push(style.active);
     }
 
-    console.log(styleNames);
 
     return (
         <div className={styleNames.join(" ")} onClick={props.currentClassHandler}>

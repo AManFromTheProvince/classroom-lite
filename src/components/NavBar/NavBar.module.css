@@ -10,11 +10,28 @@
 .LinkList {
     display: flex;
     list-style: none;
-    color: #2196F3;
 }
 
-.LinkList li {
+.Link {
+    color: #2196F3;
     margin: 1em;
     font-weight: bolder;
-    cursor: pointer
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
+}
+
+.activeLink::after {
+    content: '';
+    height: 3px;
+    width: 100%;
+    position: absolute;
+    top: 230%;
+    left: 0%;
+    background: #2196F3;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.LogOut {
+    color: #B71C1C;
 }

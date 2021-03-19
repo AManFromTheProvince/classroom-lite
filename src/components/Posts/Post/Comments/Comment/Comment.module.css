@@ -1,0 +1,40 @@
+.BigComment {
+    padding: 1em 0; 
+}
+
+.BigComment p{
+    margin: 0.5em 0;
+}
+
+.BigComment p {
+    margin: 2em 0 1em 0;
+}
+
+.BigHeader {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 2px solid #ccc;
+}
+
+.BigHeader p {
+    color: #888;
+    margin: 0.5em 0;
+}
+
+.SmallComment {
+    border-top: 2px solid #ccc;
+    padding: 1em 0;
+}
+
+.SmallHeader {
+    display: flex;
+}
+
+.SmallHeader p {
+    margin: 0em 1em;
+    color: #888;
+}
+
+.SmallHeader + p {
+    margin: 0.75em 0;
+}

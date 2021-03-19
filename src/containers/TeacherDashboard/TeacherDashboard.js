@@ -25,53 +25,53 @@ class TeacherDashboard extends Component {
                 teacher: "Display name of teacher goes here",
                 schedule: "Tue-Th 4:00PM - 7:00PM",
                 id: "1192924jn"
-            },
-            {
-                subjectName: "History 105",
-                teacher: "Display name of teacher goes here",
-                schedule: "Tue-Th 4:00PM - 7:00PM",
-                id: "1192924jn"
-            },
-            {
-                subjectName: "History 105",
-                teacher: "Display name of teacher goes here",
-                schedule: "Tue-Th 4:00PM - 7:00PM",
-                id: "1192924jn"
-            },
-            {
-                subjectName: "History 105",
-                teacher: "Display name of teacher goes here",
-                schedule: "Tue-Th 4:00PM - 7:00PM",
-                id: "1192924jn"
-            },
-            {
-                subjectName: "History 105",
-                teacher: "Display name of teacher goes here",
-                schedule: "Tue-Th 4:00PM - 7:00PM",
-                id: "1192924jn"
-            },
-            {
-                subjectName: "History 105",
-                teacher: "Display name of teacher goes here",
-                schedule: "Tue-Th 4:00PM - 7:00PM",
-                id: "1192924jn"
             }
 
         ],
+        currentPosts: [],
         currentClass: null,
         loading: false
     }
 
     onCurrentClassHandler = (id) => {
-        this.setState({currentClass: id});
+        let posts = [
+            {
+                poster: "Teacher 1",
+                body: "Hey I just assigned a new assignment to be submitted on March 31, 2021",
+                date: "Mar. 11, 2021 09:10 PM",
+                id: id,
+                comments: [
+                    {
+                        poster: "Student 1",
+                        body: "Noted!",
+                        date: "Mar. 11, 2021 09:31 PM"
+                    },
+                    {
+                        poster: "Student 2",
+                        body: "Will do!",
+                        date: "Mar. 11, 2021 09:31 PM"
+                    }
+                ]
+            }
+        ];
+        this.setState({currentClass: id, currentPosts:posts});
+    }
+
+    onCloseWorkAreaHandler = () => {
+        this.setState({currentClass: null, currentPosts: []});
     }
 
     render() {
 
-        let workArea = <WorkArea/>;
+        let workArea = null;
 
         if (this.state.loading) {
             workArea = <Spinner/>;
+        } else if (!!this.state.currentClass) {
+            workArea = <WorkArea 
+            closeHandler={() => this.onCloseWorkAreaHandler()}
+            posts={this.state.currentPosts}
+            />;
         }
 
         return (
