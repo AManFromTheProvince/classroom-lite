@@ -11,16 +11,38 @@ const input = (props) => {
                 type = props.type;
                 styleClass = [style.Text];
                 break;
+            case "date":
+                type = props.type;
+                styleClass = [style.Text];
+                break;
             default:
                 type = "";
                 styleClass=[];
         }
         
         styleClass.push(style.Input);
-        tag = <input type={type} className={styleClass.join(" ")} placeholder={props.placeholder} style={props.addStyle}/>
+        tag = (
+        <div className={style.InputDiv}>
+            <label>{props.label}</label>
+            <input 
+            type={type} 
+            className={styleClass.join(" ")} 
+            placeholder={props.placeholder} 
+            style={props.addStyle}
+            value={props.value}
+            onChange={props.change}
+            />
+        </div>
+        );
 
     } else {
-        tag = <textarea className={style.Textarea} placeholder={props.placeholder} style={props.addStyle}/>
+        tag = <textarea 
+        className={style.Textarea} 
+        placeholder={props.placeholder} 
+        style={props.addStyle}
+        value={props.value}
+        onChange={props.change}
+        />
     }
 
 

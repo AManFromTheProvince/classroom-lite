@@ -1,0 +1,22 @@
+.Illustration {
+    width: 30%;
+    margin: 1em auto;
+}
+
+.IllustrationDiv {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.IllustrationDiv p {
+    color: #888;
+}
+
+@media(max-width: 650px) {
+    .Illustration {
+        width: 50%;
+    }
+}

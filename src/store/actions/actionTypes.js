@@ -1,1 +1,6 @@
+export const LOAD_SUBJECTS = "LOAD_SUBJECTS";
+export const LOAD_CLASS = "LOAD_CLASS";
+export const RESET_CLASS = "RESET_CLASS";
+
 export const ADD_STUDENT = "ADD_STUDENT";
+export const CREATE_CLASS_SUCCESS = "CREATE_CLASS_SUCCESS";

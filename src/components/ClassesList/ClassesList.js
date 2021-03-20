@@ -18,8 +18,17 @@ const classesList = (props) => {
             />
     });
 
+    const styleClass = [style.ClassesList];
+
+    if (props.show) {
+        styleClass.push(style.ShowClasses);
+    } else {
+        styleClass.push(style.CloseClasses);
+    }
+
     return (
-        <aside className={style.ClassesList}>
+        <aside className={styleClass.join(" ")}>
+            <h2 style={{margin: "0em 0.75em", color: "#888"}}>Classes</h2>
             {classList}
         </aside>
     );

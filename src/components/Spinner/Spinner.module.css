@@ -2,6 +2,8 @@
     width: 100vw;
     background: #90CAF9;
     height: 1vh;
+    position: absolute;
+    top: 0%;
 }
 
 @keyframes loading {

@@ -9,7 +9,7 @@ const post = (props) => {
     // i used "big" to differentiate between a normal post and a comment
 
     let cardStyle = {
-        width: "80%",
+        width: "60%",
         margin: "1em auto"
     }
 

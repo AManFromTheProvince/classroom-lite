@@ -1,14 +1,15 @@
 .WorkArea {
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
-    height: 88vh;
+    height: 90vh;
 }
 
 .Nav {
+    width: 80%;
     display: flex;
-    margin: 1em 0.5em;
+    margin: 1em auto;
     justify-content: space-between;
     align-items: center;
 }
@@ -18,6 +19,11 @@
     cursor: pointer;
 }
 
+.Header {
+    margin: 1em auto;
+    color: #888;
+}
+
 .PostArea {
     width: 100%;
     background: #fff;
@@ -25,4 +31,10 @@
 
 h3 {
     margin: 1em 0em;
+}
+
+@media(max-width: 600px) {
+    .WorkArea {
+        background: red;
+    }
 }

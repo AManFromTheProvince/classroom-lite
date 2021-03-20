@@ -2,6 +2,39 @@
     background: #fff;
     width: 20vw;
     box-shadow: 2px 0px 0px #ccc;
-    height: 88vh;
+    height: 90vh;
+    position: absolute;
+    top: 10%;
     overflow-y: auto;
+    transform: translateX(-100%);
 }
+
+.ShowClasses {
+    animation: show 200ms ease-in 0s 1 forwards;
+}
+
+@keyframes show {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+.CloseClasses {
+    animation: close 200ms ease-in 0s 1 forwards;
+}
+
+@keyframes close {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+

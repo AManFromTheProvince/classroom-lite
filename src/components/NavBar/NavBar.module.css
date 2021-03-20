@@ -1,10 +1,17 @@
 .NavBar {
     background: #fff;
-    min-height: 75px;
     box-shadow: 0px 2px 4px #ccc;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
+    height: 10vh;
+    z-index: 100;
+}
+
+.NavBar span {
+    color: #2196F3;
+    margin: 0em 0.5em;
+    cursor: pointer;
 }
 
 .LinkList {
@@ -15,10 +22,13 @@
 .Link {
     color: #2196F3;
     margin: 1em;
+    padding: 1.5em 0;
     font-weight: bolder;
     cursor: pointer;
     text-decoration: none;
     position: relative;
+    height: 10vh;
+
 }
 
 .activeLink::after {
@@ -26,7 +36,7 @@
     height: 3px;
     width: 100%;
     position: absolute;
-    top: 230%;
+    top: 95%;
     left: 0%;
     background: #2196F3;
     border-radius: 5px 5px 0px 0px;
@@ -34,4 +44,12 @@
 
 .LogOut {
     color: #B71C1C;
+}
+
+@media(max-width: 650px) {
+    .NavBar {
+        height: 16.5vh;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import style from './NavBar.module.css';
 import {NavLink} from 'react-router-dom';
 
-const navBar = () => {
+const navBar = (props) => {
 
     let listItems;
 
@@ -15,7 +15,7 @@ const navBar = () => {
 
         return <NavLink 
         key={option + index} 
-        to={`/t/${option.toLowerCase().split(" ").join("_")}`} 
+        to={`/t/${option.toLowerCase().split(" ").join("-")}`} 
         className={styleClass.join(" ")} 
         activeClassName={style.activeLink}>{option}</NavLink>;
     });
@@ -24,6 +24,7 @@ const navBar = () => {
     return (
         <div>
             <nav className={style.NavBar}>
+                <span className="material-icons" onClick={props.sidebarHandler}>{props.show ? "close" : "menu"}</span>
                 <ul className={style.LinkList}>
                     {listItems}
                 </ul>
