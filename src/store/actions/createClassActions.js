@@ -1,8 +1,21 @@
 import * as actions from './actionTypes';
 import axios from 'axios';
 
+
+export const createClassStart = () => {
+    return {type: actions.CREATE_CLASS_START}
+}
+
 export const createClassSuccessful = () => {
     return {type: actions.CREATE_CLASS_SUCCESS}
+}
+
+export const createClassFail = () => {
+    return {type: actions.CREATE_CLASS_FAIL}
+}
+
+export const createClassEnd = () => {
+    return {type: actions.CREATE_CLASS_END};
 }
 
 export const createClass = (name,  section, schedule) => {
@@ -12,6 +25,9 @@ export const createClass = (name,  section, schedule) => {
     //this won't probably work when we scale up, but for the purposes of this side project, it should suffice
 
     return dispatch => {
+
+        dispatch(createClassStart());
+
         const details = {
             courseName: name,
             section: section,
@@ -20,9 +36,16 @@ export const createClass = (name,  section, schedule) => {
         }
 
         axios.post("/classes.json", details)
-        .then(res => res.json())
-        .then(data => console.log(data));
-        
-        dispatch(createClassSuccessful());
+        .then(res => {
+            dispatch(createClassSuccessful());
+        })
+        .catch(err => {
+            dispatch(createClassFail());
+        })
+        .finally(() => {
+            setTimeout(()=>{
+                dispatch(createClassEnd());
+            },10000)
+        })
     }
 }

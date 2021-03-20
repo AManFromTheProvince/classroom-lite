@@ -28,6 +28,7 @@ const create = (props) => {
                 <Button 
                 color="green" 
                 btnStyle={{width:"10%", margin: "1em 0em"}} 
+                clicked={props.createClass}
                 disabled={props.disable}>Create class</Button>
             </Card>
         </>
