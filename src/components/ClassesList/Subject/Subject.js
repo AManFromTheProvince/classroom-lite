@@ -12,7 +12,7 @@ const subject = (props) => {
 
     return (
         <div className={styleNames.join(" ")} onClick={props.currentClassHandler}>
-            <h2>{props.name}</h2>
+            <h4>{props.name}</h4>
             <p className={style.Schedule}>{props.schedule}</p>
             <p className={style.Teacher}>{props.teacher}</p>
         </div>

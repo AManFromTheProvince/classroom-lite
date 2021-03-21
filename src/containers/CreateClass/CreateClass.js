@@ -41,25 +41,22 @@ class CreateClass extends Component {
         this.setState({information: updatedInfo});
     }
 
-    onResetFields = (inputs) => {
-        // this.props.resetCreationClassHandler();
-        // this.setState({information: inputs});
-    }
-
-
     render() {
-        const disableBtn = shouldDisableBtn(this.state.information) || this.props.success;
+        const disableBtn = shouldDisableBtn(this.state.information) || this.props.success || this.props.error;
         
         const name = this.state.information.className.value;
         const section = this.state.information.section.value;
         const schedule = this.state.information.schedule.value;
 
         let message = null;
-        if (this.props.success) {
-            message = <Message color="green">Successfully created class!</Message>     
-            this.onResetFields(resetInputFields(this.state.information));       
-        } else if (this.props.error) {
-            message = <Message color="red">Failed to create the class</Message>
+
+        if (this.props.success || this.props.error) {
+            resetInputFields(this.state.information);
+            this.props.loadSubjects();
+        } 
+        
+        if (this.props.showMessage){  
+            message = <Message color={this.props.messageColor}>{this.props.message}</Message>   
         }
 
         return(
@@ -69,7 +66,7 @@ class CreateClass extends Component {
                 change={this.onChangeHandler} 
                 information={this.state.information}
                 disable={disableBtn}
-                createClass={() => this.props.createClassHandler(name, section, schedule)}
+                createClass={() => this.props.createClassHandler(name, section, schedule, this.props.username, this.props.userId)}
                 />
                 {message}
             </div>
@@ -82,14 +79,20 @@ const mapStateToProps = (state) => {
         currentClass: state.app.currentClass,
         loading: state.createClass.loading,
         success: state.createClass.successful,
-        error: state.createClass.error
+        error: state.createClass.error,
+        showMessage: state.createClass.showMessage,
+        messageColor: state.createClass.messageColor,
+        message: state.createClass.message,
+        username: state.app.userName,
+        userId: state.app.userId
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         resetClassHandler: () => dispatch(actions.resetClass()),
-        createClassHandler: (name, section, schedule) => dispatch(actions.createClass(name, section, schedule))
+        createClassHandler: (name, section, schedule, username, userId) => dispatch(actions.createClass(name, section, schedule, username, userId)),
+        loadSubjects: () => dispatch(actions.loadSubjects())
     }
 }
 

@@ -9,7 +9,7 @@ const posts = (props) => {
             body={post.body}
             date={post.date}
             comments={post.comments}
-            key={post.id + i}
+            key={post.classId + i}
         />
     });
 

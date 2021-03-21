@@ -18,7 +18,11 @@ export const createClassEnd = () => {
     return {type: actions.CREATE_CLASS_END};
 }
 
-export const createClass = (name,  section, schedule) => {
+export const createClassReset = () => {
+    return {type: actions.CREATE_CLASS_RESET};
+}
+
+export const createClass = (name,  section, schedule, username, userId) => {
     //handle talking with firebase
 
     //class id is unix time when it was created
@@ -29,10 +33,12 @@ export const createClass = (name,  section, schedule) => {
         dispatch(createClassStart());
 
         const details = {
-            courseName: name,
+            subjectName: name,
             section: section,
             schedule: schedule,
-            id: Date.now()
+            id: Date.now(),
+            userId: userId,
+            teacher: username
         }
 
         axios.post("/classes.json", details)
@@ -43,9 +49,10 @@ export const createClass = (name,  section, schedule) => {
             dispatch(createClassFail());
         })
         .finally(() => {
-            setTimeout(()=>{
+            dispatch(createClassReset());
+            setTimeout(()=> {
                 dispatch(createClassEnd());
-            },10000)
+            }, 10000);
         })
     }
 }

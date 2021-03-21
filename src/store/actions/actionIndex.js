@@ -7,3 +7,7 @@ export {
 export {
     createClass
 } from './createClassActions';
+
+export {
+    createPost
+} from './dashboardActions';

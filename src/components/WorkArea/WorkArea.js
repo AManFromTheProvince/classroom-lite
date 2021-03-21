@@ -38,6 +38,7 @@ const workArea = (props) => {
                         color="green" 
                         btnStyle={{width:"10%", margin: "1em 0em"}}
                         disabled={props.disabled}
+                        clicked={props.postHandler}
                         > Post </Button>
                 </div>
             </Card>

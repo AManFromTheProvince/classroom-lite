@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.getSubjectsHandler();
+    this.props.getSubjectsHandler(this.props.userId);
   }
 
   onSidebarHandler = () => {
@@ -48,13 +48,14 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     subjects: state.app.subjects,
-    currentClass: state.app.currentClass
+    currentClass: state.app.currentClass,
+    userId: state.app.userId
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getSubjectsHandler: () => dispatch(actions.loadSubjects()),
+    getSubjectsHandler: (userId) => dispatch(actions.loadSubjects(userId)),
     getCurrentClassHandler: (id) => dispatch(actions.loadClass(id))
   }
 }
