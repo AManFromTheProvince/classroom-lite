@@ -12,21 +12,25 @@ class CreateClass extends Component {
         information: {
             className: {
                 value: "",
-                label: "Enter class name"
+                label: "Enter class name",
+                type: "text"
             },
             section: {
                 value: "",
-                label: "Enter class section"
+                label: "Enter class section",
+                type: "text"
             },
             schedule: {
                 value: "",
-                label: "Enter class schedule"
+                label: "Enter class schedule",
+                type: "text"
             }
         }
     }
 
     componentDidMount() {
         this.props.resetClassHandler();
+        this.props.loadEndHandler();
     }
 
     componentDidUpdate() {
@@ -77,14 +81,14 @@ class CreateClass extends Component {
 const mapStateToProps = (state) => {
     return {
         currentClass: state.app.currentClass,
-        loading: state.createClass.loading,
-        success: state.createClass.successful,
-        error: state.createClass.error,
-        showMessage: state.createClass.showMessage,
-        messageColor: state.createClass.messageColor,
-        message: state.createClass.message,
+        loading: state.ui.loading,
+        success: state.ui.successful,
+        error: state.ui.error,
+        showMessage: state.ui.showMessage,
+        messageColor: state.ui.messageColor,
+        message: state.ui.message,
         username: state.app.userName,
-        userId: state.app.userId
+        userId: state.app.userId,
     }
 }
 
@@ -92,7 +96,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         resetClassHandler: () => dispatch(actions.resetClass()),
         createClassHandler: (name, section, schedule, username, userId) => dispatch(actions.createClass(name, section, schedule, username, userId)),
-        loadSubjects: () => dispatch(actions.loadSubjects())
+        loadSubjects: () => dispatch(actions.loadSubjects()),
+        loadEndHandler: () => dispatch(actions.loadEnd())    
     }
 }
 

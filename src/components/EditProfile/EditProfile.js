@@ -14,7 +14,7 @@ const editProfile = (props) => {
 
     const inputs = Object.keys(props.inputs).map((key, index) => {
         return <Input
-        type="text"
+        type={props.inputs[key].type}
         label={props.inputs[key].label}
         value={props.inputs[key].value}
         key={key+index}

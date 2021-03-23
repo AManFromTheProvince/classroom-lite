@@ -10,11 +10,13 @@ class Profile extends Component {
         inputs: {
             firstName: {
                 value: "",
-                label: "Enter your first name"
+                label: "Enter your first name",
+                type: "text"
             },
             lastName: {
                 value: "",
-                label: "Enter your last name"
+                label: "Enter your last name",
+                type: "text"
             }
         }
     }

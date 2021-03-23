@@ -19,6 +19,10 @@ class TeacherDashboard extends Component {
         loading: false
     }
 
+    componentDidMount() {
+        this.props.loadEndHandler();
+    }
+
     onChangeHandler = (e) => {
         const updatedInputs = {...this.state.inputs};
         updatedInputs["announcement"].value = e.target.value;
@@ -49,6 +53,7 @@ class TeacherDashboard extends Component {
 
         if (this.props.success || this.props.error) {
             resetInputFields(this.state.inputs);
+
         }
 
         let message = null;
@@ -58,6 +63,7 @@ class TeacherDashboard extends Component {
 
         return (
             <>
+                {this.props.appLoading && <Spinner/>}
                 <div className={style.Dashboard}>
                     {workArea}
                     {message}
@@ -73,19 +79,21 @@ const mapStateToProps = (state) => {
         subjects: state.app.subjects,
         posts: state.app.posts,
         name: state.app.userName,
-        loading: state.dashboard.loading,
-        success: state.dashboard.success,
-        error: state.dashboard.error,
-        showMessage: state.dashboard.showMessage,
-        messageColor: state.dashboard.messageColor,
-        message: state.dashboard.message
+        loading: state.ui.loading,
+        success: state.ui.successful,
+        error: state.ui.error,
+        showMessage: state.ui.showMessage,
+        messageColor: state.ui.messageColor,
+        message: state.ui.message,
+        appLoading: state.app.loading
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         resetClassHandler: () => dispatch(actions.resetClass()),
-        createPostHandler: (name, body, classId) => dispatch(actions.createPost(name, body, classId))    
+        createPostHandler: (name, body, classId) => dispatch(actions.createPost(name, body, classId)),
+        loadEndHandler: () => dispatch(actions.loadEnd())    
     }
 }
 

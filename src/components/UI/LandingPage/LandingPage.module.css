@@ -1,0 +1,17 @@
+.LandingPage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.LandingPage img {
+    width: 50%;
+}
+
+.LandingPage h1 {
+    font-size: 2.5em;
+}
+
+.LandingPage p {
+    color: #888;
+}

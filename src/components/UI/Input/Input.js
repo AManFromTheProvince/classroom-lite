@@ -5,13 +5,17 @@ const input = (props) => {
 
     
     let type, styleClass, tag;
-    if (props.type !== "textarea") {
+    if (props.type !== "textarea" && props.type !== "select") {
         switch(props.type) {
             case "text":
                 type = props.type;
                 styleClass = [style.Text];
                 break;
             case "date":
+                type = props.type;
+                styleClass = [style.Text];
+                break;
+            case "password":
                 type = props.type;
                 styleClass = [style.Text];
                 break;
@@ -35,7 +39,7 @@ const input = (props) => {
         </div>
         );
 
-    } else {
+    } else if (props.type === "textarea"){
         tag = <textarea 
         className={style.Textarea} 
         placeholder={props.placeholder} 
@@ -43,6 +47,19 @@ const input = (props) => {
         value={props.value}
         onChange={props.change}
         />
+    } else if (props.type === "select") {
+        const listOfOptions = Object.keys(props.option).map((key, i) => {
+            return <option value={props.option[key]} key={key+i}>{props.option[key]}</option>
+        })
+
+        tag = (
+            <div className={style.InputDiv}>
+                <label>{props.label}</label>
+                <select onChange={props.change}>
+                    {listOfOptions}
+                </select>
+            </div>
+        )
     }
 
 

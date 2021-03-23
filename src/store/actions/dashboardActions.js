@@ -1,33 +1,13 @@
 import axios from 'axios';
-import * as actions from './actionTypes';
 import {loadClass} from './appActions';
-
-export const createPostStart = () => {
-    return {type: actions.CREATE_CLASS_POST_START};
-}
-
-export const createPostSuccess = () => {
-    return {type: actions.CREATE_CLASS_POST_SUCCESS};
-}
-
-export const createPostFail = () => {
-    return {type: actions.CREATE_CLASS_POST_FAIL}
-}
-
-export const createPostReset = () => {
-    return {type: actions.CREATE_CLASS_POST_RESET};
-}
-
-export const createPostEnd = () => {
-    return {type: actions.CREATE_CLASS_POST_END};
-}
-
-
+import * as uiActions from './uiActions';
+import encrpyt from 'js-sha256';
 
 export const createPost = (name, body, subjectId) => {
     return dispatch => {
 
-        dispatch(createPostStart());
+        dispatch(uiActions.loadReset());
+        dispatch(uiActions.loadStart());
 
         const date = new Date();
         const dateString =  date.toDateString() + " " + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -37,22 +17,23 @@ export const createPost = (name, body, subjectId) => {
             body: body,
             date: dateString,
             classId: subjectId,
+            id: encrpyt.sha256(body),
             comments: []
         }
 
         axios.post("/posts.json", details)
         .then(res => {
-            dispatch(createPostSuccess());
+            dispatch(uiActions.loadSuccess("Successfully created a new post"));
         })
         .catch(err => {
-            dispatch(createPostFail());
+            dispatch(uiActions.loadFail("Failed to post"));
         })
         .finally(() => {
-            dispatch(createPostReset());
+            dispatch(uiActions.loadReset());
             dispatch(loadClass(subjectId));
 
             setTimeout(() => {
-                dispatch(createPostEnd());
+                dispatch(uiActions.loadEnd());
             }, 10000);
         })
     }

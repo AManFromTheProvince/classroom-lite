@@ -1,26 +1,8 @@
-import * as actions from './actionTypes';
 import axios from 'axios';
+import * as uiActions from './uiActions';
+import encrypt from 'js-sha256';
 
 
-export const createClassStart = () => {
-    return {type: actions.CREATE_CLASS_START}
-}
-
-export const createClassSuccessful = () => {
-    return {type: actions.CREATE_CLASS_SUCCESS}
-}
-
-export const createClassFail = () => {
-    return {type: actions.CREATE_CLASS_FAIL}
-}
-
-export const createClassEnd = () => {
-    return {type: actions.CREATE_CLASS_END};
-}
-
-export const createClassReset = () => {
-    return {type: actions.CREATE_CLASS_RESET};
-}
 
 export const createClass = (name,  section, schedule, username, userId) => {
     //handle talking with firebase
@@ -29,29 +11,29 @@ export const createClass = (name,  section, schedule, username, userId) => {
     //this won't probably work when we scale up, but for the purposes of this side project, it should suffice
 
     return dispatch => {
-
-        dispatch(createClassStart());
+        dispatch(uiActions.loadReset());
+        dispatch(uiActions.loadStart());
 
         const details = {
             subjectName: name,
             section: section,
             schedule: schedule,
-            id: Date.now(),
+            id: encrypt.sha256(name),
             userId: userId,
             teacher: username
         }
 
         axios.post("/classes.json", details)
         .then(res => {
-            dispatch(createClassSuccessful());
+            dispatch(uiActions.loadSuccess("Successfully created a new class"));
         })
         .catch(err => {
-            dispatch(createClassFail());
+            dispatch(uiActions.loadFail("Failed to create a new class"));
         })
         .finally(() => {
-            dispatch(createClassReset());
+            dispatch(uiActions.loadReset());
             setTimeout(()=> {
-                dispatch(createClassEnd());
+                dispatch(uiActions.loadReset());
             }, 10000);
         })
     }

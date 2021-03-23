@@ -53,3 +53,20 @@
         justify-content: flex-start;
     }
 }
+
+.notAuth {
+    /* justify-content: flex-end; */
+    background: #2196F3;;
+}
+
+.notAuth h2 {
+    margin: 0em 0.5em;
+}
+
+.notAuth h2, .notAuth .Link{
+    color: #fff
+}
+
+.notAuth .activeLink::after {
+    background-color: #fff;
+}

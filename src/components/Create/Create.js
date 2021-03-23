@@ -13,7 +13,7 @@ const create = (props) => {
 
     let inputList = Object.keys(props.information).map(info => {
         return <Input 
-        type="text" 
+        type={props.information[info].type}
         label={props.information[info].label} 
         change={(e)=>props.change(e, info)} 
         value={props.information[info].value}

@@ -11,3 +11,14 @@ export {
 export {
     createPost
 } from './dashboardActions';
+
+export {
+    loadReset,
+    loadEnd
+} from './uiActions';
+
+export {
+    authenticate,
+    authReset,
+    addUserDetails
+} from './authActions';
