@@ -5,7 +5,7 @@ import {NavLink} from 'react-router-dom';
 const navBar = (props) => {
 
     let menuItems = ["Dashboard", "Create a class", "My Profile", "Log out"];
-    let subdomain = "/t/" //default teacher subdomain
+    let subdomain = "/u/" //default user subdomain
     let listItems;
 
     if (!props.isAuth) {

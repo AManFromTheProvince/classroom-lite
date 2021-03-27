@@ -19,6 +19,7 @@ class App extends Component {
 
   componentDidMount() {
     this.props.getSubjectsHandler(this.props.userId);
+    this.props.checkLoggedInHandler();
   }
 
   onSidebarHandler = () => {
@@ -38,19 +39,17 @@ class App extends Component {
       </Switch>
     );
 
-    if (this.props.isAuth && this.props.userType === "Teacher") {
+    if (this.props.isAuth) {
       routes = (
         <Switch>
-          <Route path="/t/dashboard" exact component={TeacherDashboard}/>
-          <Route path="/t/create-a-class" exact component={CreateClass}/>
-          <Route path="/t/my-profile" exact component={Profile}/>
-          <Redirect from="/" to="/t/dashboard" />
-          <Redirect from="/t/log-out" to="/auth"/>
+          <Route path="/u/dashboard" exact component={TeacherDashboard}/>
+          <Route path="/u/create-a-class" exact component={CreateClass}/>
+          <Route path="/u/my-profile" exact component={Profile}/>
+          <Redirect from="/" to="/u/dashboard" />
+          <Redirect from="/u/log-out" to="/auth"/>
         </Switch>
       );
     }
-
-
 
     return (
       <div>
@@ -77,7 +76,6 @@ const mapStateToProps = (state) => {
     subjects: state.app.subjects,
     currentClass: state.app.currentClass,
     userId: state.app.userId,
-    userType: state.auth.userType,
     isAuth: state.auth.isAuth
   }
 }
@@ -86,7 +84,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getSubjectsHandler: (userId) => dispatch(actions.loadSubjects(userId)),
     getCurrentClassHandler: (id) => dispatch(actions.loadClass(id)),
-    logoutHandler: () => dispatch(actions.authReset())
+    logoutHandler: () => dispatch(actions.authReset()),
+    checkLoggedInHandler: () => dispatch(actions.checkLoggedIn())
   }
 }
 

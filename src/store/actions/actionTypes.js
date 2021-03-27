@@ -15,4 +15,6 @@ export const LOAD_END = "LOAD_END";
 export const AUTHENTICATE = "AUTHENTICATE";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";
 export const AUTH_RESET = "AUTH_RESET";
+export const AUTH_FAIL = "AUTH_FAIL";
 export const ADD_USER_DETAILS_SUCCESS = "ADD_USER_DETAILS_SUCCESS";
+export const ADD_USER_DETAILS_FAIL = "ADD_USER_DETAILS_FAIL";

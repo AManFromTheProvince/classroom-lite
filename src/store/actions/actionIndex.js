@@ -20,5 +20,5 @@ export {
 export {
     authenticate,
     authReset,
-    addUserDetails
+    checkLoggedIn
 } from './authActions';

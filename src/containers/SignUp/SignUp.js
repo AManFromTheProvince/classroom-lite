@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import AuthForm from '../../components/UI/AuthForm/AuthForm';
+import Message from '../../components/UI/Message/Message';
+import Spinner from '../../components/Spinner/Spinner';
 import * as actions from '../../store/actions/actionIndex';
 
 
@@ -31,15 +33,6 @@ class SignUp extends Component {
                 value: "",
                 label: "Enter Last Name",
                 type: "text"
-            },
-            userType: {
-                value: "Student",
-                label: "Enter type of user",
-                type: "select",
-                options: {
-                    student: "Student",
-                    teacher: "Teacher"
-                }
             }
         },
         redirect: false
@@ -48,21 +41,16 @@ class SignUp extends Component {
     onSubmitSignUp = (e) => {
         e.preventDefault();
         
-        if (this.state.stage === 1) {
-            this.setState({stage: 2});
-
+        if (this.state.stage === 1) {      
+           this.setState({stage: 2});
+        } else if(this.state.stage === 2){
             const email = this.state.stage1Inputs.email.value;
             const password = this.state.stage1Inputs.password.value;
-        
-            this.props.authenticateHandler(email, password);
-        } else if(this.state.stage === 2){
             const firstName = this.state.stage2Inputs.firstName.value;
             const lastName = this.state.stage2Inputs.lastName.value;
-            const type = this.state.stage2Inputs.userType.value;
-
-            this.props.addUserHandler(firstName, lastName, type);
-            console.log("ASASasasasa");
+            
             this.setState({redirect: true});
+            this.props.authenticateHandler(email, password, firstName, lastName);
         }
     }
 
@@ -80,6 +68,10 @@ class SignUp extends Component {
         this.setState({[modifiyingKey]: updatedInputs});
     }
 
+    onBackHandler = () => {
+        this.setState({stage: 1});
+    }
+
     render() {
         let currentInputs = this.state.stage1Inputs;
 
@@ -88,15 +80,23 @@ class SignUp extends Component {
         }
 
         let redirectTag = null;
-        //fix this for student and teacher
-        if (this.state.redirect && this.props.userType === "Student") {
-            redirectTag = <Redirect to="/s/dashboard"/>;
-        } else if (this.state.redirect && this.props.userType === "Teacher") {
-            redirectTag = <Redirect to="/t/dashboard"/>;
+        if (this.state.redirect && !this.props.loading) {
+            redirectTag = <Redirect to="/u/dashboard"/>;
+        }
+
+        let message = null;
+        if (this.props.showMessage) {
+            message = <Message color={this.props.messageColor}>{this.props.message}</Message>;
+        }
+
+        let loading = null;
+        if (this.props.loading) {
+            loading = <Spinner/>;
         }
 
         return (
             <div>
+                {loading}
                 <h1 style={{margin: "1em auto", width: "10%", color: "#888"}}>Sign up</h1>
                 <AuthForm 
                     submit={this.onSubmitSignUp} 
@@ -104,8 +104,12 @@ class SignUp extends Component {
                     multistage={true} 
                     inputs={currentInputs}
                     change={this.onChangeHandler}
+                    hasError={!!this.props.error}
+                    disable={this.props.loading}
+                    back={this.onBackHandler}
                 />
                 {redirectTag}
+                {message}
             </div>
         );
     }
@@ -113,14 +117,19 @@ class SignUp extends Component {
 
 const mapStateToProps = state => {
     return {
-        userType: state.auth.userType
+        error: state.auth.error,
+        message: state.ui.message,
+        messageColor: state.ui.messageColor,
+        loading: state.ui.loading,
+        success: state.ui.successful,
+        showMessage: state.ui.showMessage
     }
 }
 
+
 const mapDispatchToProps = dispatch => {
     return {
-        authenticateHandler: (email, password) => dispatch(actions.authenticate(email, password)),
-        addUserHandler: (firstName, lastName, type) => dispatch(actions.addUserDetails(firstName, lastName, type)) 
+        authenticateHandler: (email, password) => dispatch(actions.authenticate(email, password))
     }
 }
 
