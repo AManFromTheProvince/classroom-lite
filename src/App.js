@@ -7,9 +7,9 @@ import NavBar from './components/NavBar/NavBar';
 import ClassesList from './components/ClassesList/ClassesList';
 import { connect } from 'react-redux';
 import * as actions from './store/actions/actionIndex';
-import Authentication from './containers/Authentication/Authentication';
 import LandingPage from './components/UI/LandingPage/LandingPage';
 import SignUp from './containers/SignUp/SignUp';
+import LogIn from './containers/LogIn/LogIn';
 
 class App extends Component {
 
@@ -18,8 +18,13 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.getSubjectsHandler(this.props.userId);
-    this.props.checkLoggedInHandler();
+
+    if (this.props.isAuth){
+      this.props.getSubjectsHandler(this.props.userId);
+    } else {
+      this.props.checkLoggedInHandler();
+    }
+
   }
 
   onSidebarHandler = () => {
@@ -31,11 +36,10 @@ class App extends Component {
   render() {
     let  routes = (
       <Switch>
-        <Route path="/auth" exact component={LandingPage}/>
-        <Route path="/a/sign-up" exact component={SignUp}/>
-        <Route path="/a/log-in" exact component={Authentication}/>
-        <Redirect from="/a/welcome" to="/auth"/>
-        <Redirect from="/" to="/auth" />
+        <Route path="/welcome" exact component={LandingPage}/>
+        <Route path="/sign-up" exact component={SignUp}/>
+        <Route path="/log-in" exact component={LogIn}/>
+        <Redirect from="/" to="/welcome" />
       </Switch>
     );
 
@@ -46,7 +50,7 @@ class App extends Component {
           <Route path="/u/create-a-class" exact component={CreateClass}/>
           <Route path="/u/my-profile" exact component={Profile}/>
           <Redirect from="/" to="/u/dashboard" />
-          <Redirect from="/u/log-out" to="/auth"/>
+          <Redirect from="/u/log-out" to="/welcome"/>
         </Switch>
       );
     }
@@ -75,7 +79,7 @@ const mapStateToProps = (state) => {
   return {
     subjects: state.app.subjects,
     currentClass: state.app.currentClass,
-    userId: state.app.userId,
+    userId: state.auth.userId,
     isAuth: state.auth.isAuth
   }
 }

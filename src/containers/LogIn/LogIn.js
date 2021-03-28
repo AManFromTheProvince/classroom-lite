@@ -8,11 +8,10 @@ import * as actions from '../../store/actions/actionIndex';
 import { shouldDisableBtn } from '../../utility/utility';
 
 
-class SignUp extends Component {
+class LogIn extends Component {
 
     state = {
-        stage: 1,
-        stage1Inputs: {
+        inputs: {
             email: {
                 value: "",
                 label: "Enter email address",
@@ -22,18 +21,6 @@ class SignUp extends Component {
                 value: "",
                 label: "Enter password",
                 type: "password"
-            }
-        },
-        stage2Inputs: {
-            firstName: {
-                value: "",
-                label: "Enter First Name",
-                type: "text"
-            },
-            lastName: {
-                value: "",
-                label: "Enter Last Name",
-                type: "text"
             }
         },
         redirect: false
@@ -49,46 +36,25 @@ class SignUp extends Component {
         }
     }
 
-    onSubmitSignUp = (e) => {
+    onSubmitLogIn = (e) => {
         e.preventDefault();
-        
-        if (this.state.stage === 1) {      
-           this.setState({stage: 2});
-        } else if(this.state.stage === 2){
-            const email = this.state.stage1Inputs.email.value;
-            const password = this.state.stage1Inputs.password.value;
-            const firstName = this.state.stage2Inputs.firstName.value;
-            const lastName = this.state.stage2Inputs.lastName.value;
-            
-            this.props.authenticateHandler(email, password, firstName, lastName);
-        }
+    
+        const email = this.state.inputs.email.value;
+        const password = this.state.inputs.password.value;
+       
+        this.props.loginHandler(email, password);
     }
 
     onChangeHandler = (e, key) => {
-        let updatedInputs = {...this.state.stage1Inputs};
-        let modifiyingKey = "stage1Inputs";
-
-        if (this.state.stage === 2) {
-            updatedInputs = {...this.state.stage2Inputs};
-            modifiyingKey = "stage2Inputs";
-        }
+        let updatedInputs = {...this.state.inputs};
 
         updatedInputs[key].value = e.target.value;
 
-        this.setState({[modifiyingKey]: updatedInputs});
-    }
-
-    onBackHandler = () => {
-        this.setState({stage: 1});
+        this.setState({inputs: updatedInputs});
     }
 
     render() {
-        let currentInputs = this.state.stage1Inputs;
-
-        if (this.state.stage === 2) {
-            currentInputs = this.state.stage2Inputs;
-        }
-
+     
         let redirectTag = null;
         if (this.state.redirect && !this.props.loading) {
             redirectTag = <Redirect to="/u/dashboard"/>;
@@ -104,22 +70,19 @@ class SignUp extends Component {
             loading = <Spinner/>;
         }
 
-        let isInputsValid = shouldDisableBtn(this.state.stage1Inputs);
-        isInputsValid = isInputsValid && shouldDisableBtn(this.state.stage2Inputs);
+        let isInputsValid = shouldDisableBtn(this.state.inputs);
 
         return (
             <div>
                 {loading}
-                <h1 style={{margin: "1em auto", width: "10%", color: "#888"}}>Sign up</h1>
+                <h1 style={{margin: "1em auto", width: "10%", color: "#888"}}>Log In</h1>
                 <AuthForm 
-                    submit={this.onSubmitSignUp} 
-                    stage={this.state.stage} 
-                    multistage={true} 
-                    inputs={currentInputs}
+                    submit={this.onSubmitLogIn} 
+                    multistage={false} 
+                    inputs={this.state.inputs}
                     change={this.onChangeHandler}
                     hasError={!!this.props.error}
                     disable={this.props.loading || isInputsValid}
-                    back={this.onBackHandler}
                 />
                 {redirectTag}
                 {message}
@@ -142,9 +105,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        authenticateHandler: (email, password) => dispatch(actions.authenticate(email, password)),
+        loginHandler: (email, password) => dispatch(actions.logIn(email, password)),
         disableShowMessage: () => dispatch(actions.loadEnd())
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

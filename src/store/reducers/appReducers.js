@@ -3,7 +3,6 @@ import * as actions from '../actions/actionTypes';
 const initialState = {
     subjects: [],
     currentClass: null,
-    userId: 1,
     userName: "Teacher 1",
     posts: [],
     loading: false

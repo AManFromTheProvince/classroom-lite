@@ -16,33 +16,35 @@ const authForm = (props) => {
         />
     });
 
+
+    //by default if it's not multistage, the button should say Log In
     let btnStyle = {margin: "1em 0em"};
-    let submitBtn = <Button 
-        color="green" 
-        btnStyle={btnStyle}
-        disabled={props.disable}
-        clicked={(e) => props.submit(e)}
-         >Next</Button>
-    
+    let btnText = "Log in";    
     let backBtn = null;
 
-    if (props.stage === 2) {
-        btnStyle = {margin: "1em 1em 1em 0em"};
-        submitBtn = <Button 
-        color="green" 
-        btnStyle={btnStyle}
-        disabled={props.disable}
-        clicked={(e) => props.submit(e)}
-        >Submit</Button>;
-
-        backBtn = <Button 
-        color="green" 
-        btnStyle={btnStyle}
-        disabled={props.disable}
-        clicked={() => props.back()}
-        >Back</Button>;
-
+    if (props.multistage) {         //two step process in signing up or logging in
+        btnText = "Next";    
+    
+        if (props.stage === 2) {
+            btnStyle = {margin: "1em 1em 1em 0em"};
+            btnText = "Sign up";
+    
+            backBtn = <Button 
+            color="green" 
+            btnStyle={btnStyle}
+            disabled={props.disable}
+            clicked={() => props.back()}
+            >Back</Button>;
+    
+        }
     }
+
+    let submitBtn = <Button 
+    color="green" 
+    btnStyle={btnStyle}
+    disabled={props.disable}
+    clicked={(e) => props.submit(e)}
+     >{btnText}</Button>
 
 
     return (

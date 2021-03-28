@@ -2,6 +2,20 @@ import axios from 'axios';
 import * as actions from './actionTypes';
 import * as uiActions from './uiActions';
 
+const storeAuthDetails = (res) => {
+    localStorage.setItem("idToken", res.idToken);
+    localStorage.setItem("expiresIn", (res.expiresIn * 1000) + new Date()); //convert to millisecond
+    localStorage.setItem("localId", res.localId);
+    localStorage.setItem("refreshToken", res.refreshToken); 
+}
+
+const removeAuthDetails = () => {
+    localStorage.removeItem("idToken");
+    localStorage.removeItem("expiresIn");
+    localStorage.removeItem("localId");
+    localStorage.removeItem("refreshToken");
+}
+
 export const authenticate = (email, password, firstName, lastName) => {
     return dispatch => {
         dispatch(authReset());
@@ -16,10 +30,7 @@ export const authenticate = (email, password, firstName, lastName) => {
     
         axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_API_KEY}`, credentials)
         .then(res => {
-            localStorage.setItem("idToken", res.data.idToken);
-            localStorage.setItem("expiresIn", (res.data.expiresIn * 1000) + new Date()); //convert to millisecond
-            localStorage.setItem("localId", res.data.localId);
-            localStorage.setItem("refreshToken", res.data.refreshToken); 
+            storeAuthDetails(res.data);
             dispatch(authSuccess());
             dispatch(addUserDetails(firstName, lastName));
             
@@ -44,10 +55,7 @@ export const authSuccess = () => {
 }
 
 export const authReset = () => {
-    localStorage.removeItem("idToken");
-    localStorage.removeItem("expiresIn");
-    localStorage.removeItem("localId");
-    localStorage.removeItem("refreshToken");
+    removeAuthDetails();
     return {type: actions.AUTH_RESET};
 }
 
@@ -129,5 +137,40 @@ export const keepLoggedIn = () => {
         .catch( err => {
             dispatch(authReset());
         })
+    }
+}
+
+
+export const logIn = (email, password) => {
+    return dispatch => {
+        dispatch(uiActions.loadReset());
+        dispatch(uiActions.loadStart());
+
+        const credentials = {
+            email: email,
+            password: password,
+            returnSecureToken: true
+        }
+
+        axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_API_KEY}`, credentials)
+        .then(res => {
+            storeAuthDetails(res.data);
+            dispatch(uiActions.loadSuccess());
+            dispatch(authSuccess());
+            dispatch(addUsersSuccess());
+        })
+        .catch(err => {
+            dispatch(uiActions.loadFail("Wrong credentials. Check your email or password"));
+            dispatch(authFail(err.message));
+        })
+        .then(() => {
+            dispatch(uiActions.loadReset());
+
+            setTimeout(() => {
+                dispatch(uiActions.loadEnd());
+            }, 10000);
+        });
+
+
     }
 }

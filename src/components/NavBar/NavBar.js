@@ -4,13 +4,13 @@ import {NavLink} from 'react-router-dom';
 
 const navBar = (props) => {
 
-    let menuItems = ["Dashboard", "Create a class", "My Profile", "Log out"];
-    let subdomain = "/u/" //default user subdomain
     let listItems;
-
-    if (!props.isAuth) {
-        menuItems = ["Welcome", "Sign up", "Log in"];
-        subdomain = "/a/"   //subdomain for authenticating
+    let menuItems = ["Welcome", "Sign up", "Log in"];
+    let subdomain = ""   //subdomain for authenticating
+    
+    if (props.isAuth) {
+        menuItems = ["Dashboard", "Create a class", "My Profile", "Log out"];
+        subdomain = "/u/" //default user subdomain
     }
 
     
