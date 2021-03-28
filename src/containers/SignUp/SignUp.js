@@ -142,7 +142,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        authenticateHandler: (email, password) => dispatch(actions.authenticate(email, password)),
+        authenticateHandler: (email, password, firstName, lastName) => dispatch(actions.authenticate(email, password, firstName, lastName)),
         disableShowMessage: () => dispatch(actions.loadEnd())
     }
 }

@@ -1,12 +1,13 @@
 import axios from 'axios';
 import * as actions from './actionTypes';
 import * as uiActions from './uiActions';
+import {resetClass, loadSubjects} from './appActions';
 
-const storeAuthDetails = (res) => {
-    localStorage.setItem("idToken", res.idToken);
-    localStorage.setItem("expiresIn", (res.expiresIn * 1000) + new Date()); //convert to millisecond
-    localStorage.setItem("localId", res.localId);
-    localStorage.setItem("refreshToken", res.refreshToken); 
+const storeAuthDetails = (idToken, expiresIn, localId, refreshToken) => {
+    localStorage.setItem("idToken", idToken);
+    localStorage.setItem("expiresIn", (expiresIn * 1000) + new Date()); //convert to millisecond
+    localStorage.setItem("localId", localId);
+    localStorage.setItem("refreshToken", refreshToken); 
 }
 
 const removeAuthDetails = () => {
@@ -19,6 +20,7 @@ const removeAuthDetails = () => {
 export const authenticate = (email, password, firstName, lastName) => {
     return dispatch => {
         dispatch(authReset());
+        dispatch(resetClass());
         dispatch(uiActions.loadReset());
         dispatch(uiActions.loadStart());
 
@@ -30,9 +32,9 @@ export const authenticate = (email, password, firstName, lastName) => {
     
         axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_API_KEY}`, credentials)
         .then(res => {
-            storeAuthDetails(res.data);
+            storeAuthDetails(res.data.idToken, res.data.expiresIn, res.data.localId, res.data.refreshToken);
             dispatch(authSuccess());
-            dispatch(addUserDetails(firstName, lastName));
+            dispatch(addUserDetails(firstName, lastName, email));
             
         })
         .catch( err => {
@@ -59,20 +61,22 @@ export const authReset = () => {
     return {type: actions.AUTH_RESET};
 }
 
-export const addUserDetails = (firstName, lastName) => {
+export const addUserDetails = (firstName, lastName, email) => {
     return dispatch => {
+        const id = localStorage.getItem("localId");
 
         const credentials = {
             firstName: firstName,
             lastName: lastName,
-            id: localStorage.getItem("localId")
+            email: email,
+            id: id
         }
         
-
         axios.post("/users.json", credentials)
         .then(res => {
             dispatch(uiActions.loadSuccess("Successfully created user details"));
-            dispatch(addUsersSuccess());
+            dispatch(addUsersSuccess(firstName, lastName, email));
+            dispatch(loadSubjects(id));
         })
         .catch( err => {
             dispatch(uiActions.loadFail("Error in adding user details"));
@@ -88,8 +92,8 @@ export const addUserDetails = (firstName, lastName) => {
     }
 }
 
-export const addUsersSuccess = () => {
-    return {type: actions.ADD_USER_DETAILS_SUCCESS};
+export const addUsersSuccess = (firstName, lastName, email) => {
+    return {type: actions.ADD_USER_DETAILS_SUCCESS, payload: {username: firstName + " " + lastName, email: email}};
 }
 
 export const addUsersFail = err => {
@@ -99,12 +103,14 @@ export const addUsersFail = err => {
 export const checkLoggedIn = () => {
     return dispatch => {
         const expirationTime = localStorage.getItem("expiresIn");
+        const id = localStorage.getItem("localId");
 
         if (new Date() > expirationTime) {
             dispatch(authReset());
         } else {
             dispatch(authSuccess());
-            dispatch(addUsersSuccess());
+            dispatch(getUserDetails(id));
+            dispatch(loadSubjects(id));
             dispatch(checkTimeLeft( expirationTime - new Date()  ));
         }
         
@@ -129,10 +135,8 @@ export const keepLoggedIn = () => {
 
         axios.post(`https://securetoken.googleapis.com/v1/token?key=${process.env.REACT_APP_API_KEY}`, credentials)
         .then( res => {
-            localStorage.setItem("idToken", res.data.id_token);
-            localStorage.setItem("expiresIn", (res.data.expires_in * 1000) + new Date());
-            localStorage.setItem("localId", res.data.user_id);
-            localStorage.setItem("refreshToken", res.data.refresh_token);  
+            storeAuthDetails(res.data.id_token, res.data.expires_in, res.data.user_id, res.data.refresh_token);
+            dispatch(getUserDetails(res.data.user_id));
         })
         .catch( err => {
             dispatch(authReset());
@@ -143,6 +147,7 @@ export const keepLoggedIn = () => {
 
 export const logIn = (email, password) => {
     return dispatch => {
+        dispatch(resetClass());
         dispatch(uiActions.loadReset());
         dispatch(uiActions.loadStart());
 
@@ -154,16 +159,15 @@ export const logIn = (email, password) => {
 
         axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_API_KEY}`, credentials)
         .then(res => {
-            storeAuthDetails(res.data);
-            dispatch(uiActions.loadSuccess());
+            storeAuthDetails(res.data.idToken, res.data.expiresIn, res.data.localId, res.data.refreshToken);
             dispatch(authSuccess());
-            dispatch(addUsersSuccess());
+            dispatch(getUserDetails(res.data.localId));
         })
         .catch(err => {
             dispatch(uiActions.loadFail("Wrong credentials. Check your email or password"));
             dispatch(authFail(err.message));
         })
-        .then(() => {
+        .finally(() => {
             dispatch(uiActions.loadReset());
 
             setTimeout(() => {
@@ -171,6 +175,23 @@ export const logIn = (email, password) => {
             }, 10000);
         });
 
+    }
+}
+
+export const getUserDetails = (id) => {
+    return dispatch => {
+        axios.get(`/users.json?orderBy="id"&equalTo="${id}"`)
+        .then( res => {
+            dispatch(uiActions.loadSuccess());
+            const userDataKey = Object.keys(res.data).filter( key => res.data[key].id === id);
+            const userData = res.data[userDataKey[0]];
+            dispatch(addUsersSuccess(userData.firstName, userData.lastName, userData.email));
+            dispatch(loadSubjects(id));
+        })
+        .catch( err => {
+            dispatch(authReset());
+        })
+       
 
     }
 }

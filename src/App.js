@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Route, Switch, withRouter } from 'react-router';
-import TeacherDashboard from './containers/TeacherDashboard/TeacherDashboard';
+import Dashboard from './containers/Dashboard/Dashboard';
 import CreateClass from './containers/CreateClass/CreateClass';
 import Profile from './containers/Profile/Profile';
 import NavBar from './components/NavBar/NavBar';
@@ -18,14 +18,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-
-    if (this.props.isAuth){
-      this.props.getSubjectsHandler(this.props.userId);
-    } else {
+    if (!this.props.isAuth){
       this.props.checkLoggedInHandler();
     }
-
   }
+
 
   onSidebarHandler = () => {
     this.setState(prevState =>  {
@@ -46,7 +43,7 @@ class App extends Component {
     if (this.props.isAuth) {
       routes = (
         <Switch>
-          <Route path="/u/dashboard" exact component={TeacherDashboard}/>
+          <Route path="/u/dashboard" exact component={Dashboard}/>
           <Route path="/u/create-a-class" exact component={CreateClass}/>
           <Route path="/u/my-profile" exact component={Profile}/>
           <Redirect from="/" to="/u/dashboard" />

@@ -1,7 +1,5 @@
 import axios from 'axios';
 import * as uiActions from './uiActions';
-import encrypt from 'js-sha256';
-
 
 
 export const createClass = (name,  section, schedule, username, userId) => {
@@ -18,7 +16,6 @@ export const createClass = (name,  section, schedule, username, userId) => {
             subjectName: name,
             section: section,
             schedule: schedule,
-            id: encrypt.sha256(name),
             userId: userId,
             teacher: username
         }

@@ -9,7 +9,8 @@ export {
 } from './createClassActions';
 
 export {
-    createPost
+    createPost,
+    addStudents
 } from './dashboardActions';
 
 export {
@@ -21,5 +22,6 @@ export {
     authenticate,
     authReset,
     checkLoggedIn,
-    logIn
+    logIn,
+    getUserDetails
 } from './authActions';

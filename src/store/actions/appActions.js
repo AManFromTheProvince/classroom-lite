@@ -8,13 +8,12 @@ export const loadSubjectsSuccess = (subjects) => {
 
 export const loadSubjects = (userId) => {
     //getting info from firebase goes here
- 
     return dispatch => {
-        axios.get(`/classes.json?userId=${userId}`)
+        axios.get(`/classes.json?orderBy="userId"&equalTo="${userId}"`)
         .then(res => {
             if (!!res.data) {
                 const subjects = Object.keys(res.data).map(key => {
-                    return res.data[key];
+                    return {...res.data[key], classId: key};
                 });
     
                 dispatch(loadSubjectsSuccess(subjects));
@@ -45,7 +44,7 @@ export const loadClass = (id) => {
         dispatch(loadClassStart());
 
 
-        axios.get(`/posts.json?&orderBy="classId"&equalTo=${id}`)
+        axios.get(`/posts.json?&orderBy="classId"&equalTo="${id}"`)
         .then(res => {
             if (!!res.data) {
                 const data = Object.keys(res.data).map(key => {

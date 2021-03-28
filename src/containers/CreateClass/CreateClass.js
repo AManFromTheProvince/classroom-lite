@@ -31,6 +31,7 @@ class CreateClass extends Component {
     componentDidMount() {
         this.props.resetClassHandler();
         this.props.loadEndHandler();
+
     }
 
     componentDidUpdate() {
@@ -56,7 +57,7 @@ class CreateClass extends Component {
 
         if (this.props.success || this.props.error) {
             resetInputFields(this.state.information);
-            this.props.loadSubjects();
+            this.props.loadSubjects(this.props.userId);
         } 
         
         if (this.props.showMessage){  
@@ -87,8 +88,8 @@ const mapStateToProps = (state) => {
         showMessage: state.ui.showMessage,
         messageColor: state.ui.messageColor,
         message: state.ui.message,
-        username: state.app.userName,
-        userId: state.app.userId,
+        username: state.auth.username,
+        userId: state.auth.userId,
     }
 }
 
@@ -96,7 +97,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         resetClassHandler: () => dispatch(actions.resetClass()),
         createClassHandler: (name, section, schedule, username, userId) => dispatch(actions.createClass(name, section, schedule, username, userId)),
-        loadSubjects: () => dispatch(actions.loadSubjects()),
+        loadSubjects: (id) => dispatch(actions.loadSubjects(id)),
         loadEndHandler: () => dispatch(actions.loadEnd())    
     }
 }

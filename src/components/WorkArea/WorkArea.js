@@ -4,6 +4,7 @@ import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import Card from '../../components/UI/Card/Card';
 import Posts from '../../components/Posts/Posts';
+import AddStudent from '../AddStudent/AddStudent';
 
 const workArea = (props) => {
 
@@ -13,22 +14,37 @@ const workArea = (props) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
+    }  
+
+    let addStudent = null;
+
+    if (props.showAddStudents) {
+        addStudent = <AddStudent 
+        inputs={props.emailInput} 
+        change={(e) => props.emailChange(e)} 
+        clicked={props.showAddStudentsHandler}
+        addStudents={props.addStudents}
+        />;
     }
 
 
     return (
         <div className={style.WorkArea}>
-
+            {addStudent}
             <div className={style.Nav}>
                 <span className="material-icons" onClick={props.closeHandler}>clear</span>
-                <Button color="red"> Unenroll class </Button>
+                <div>
+                    <Button color="green" btnStyle={{margin: "0em 1em"}} clicked={props.showAddStudentsHandler}>Add student</Button>
+                    <Button color="red" > Unenroll class </Button>
+                </div>
             </div>
 
             <h2 className={style.Header}>{props.subject}</h2>
+            <h2 className={style.Header}> Section {props.section}</h2>
 
             <Card cardStyle={cardStyle}>
                 <div className={style.PostArea}>
-                    <h3>{"Teacher 1 "}</h3>
+                    <h3>{props.username}</h3>
                     <Input 
                     type="textarea" 
                     placeholder="Post something to your class!" 

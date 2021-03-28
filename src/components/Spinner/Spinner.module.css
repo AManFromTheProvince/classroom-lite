@@ -3,6 +3,7 @@
     background: #90CAF9;
     height: 1vh;
     position: absolute;
+    z-index: 1000;
     top: 0%;
 }
 

@@ -9,7 +9,7 @@ const navBar = (props) => {
     let subdomain = ""   //subdomain for authenticating
     
     if (props.isAuth) {
-        menuItems = ["Dashboard", "Create a class", "My Profile", "Log out"];
+        menuItems = ["Dashboard", "Create a class", "Join a class", "My Profile", "Log out"];
         subdomain = "/u/" //default user subdomain
     }
 
